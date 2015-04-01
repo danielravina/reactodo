@@ -1,13 +1,13 @@
+var React = require("react")
+
 var InputBox = React.createClass({
   render: function() {
     return (
-      <div className="commentBox">
-        Hello, world! I am a CommentBox..
+      <div className="inputbox">
+        input box here?
       </div>
     );
   }
 });
-React.render(
-  <CommentBox />,
-  document.getElementById('content')
-);
+
+module.exports = InputBox;
