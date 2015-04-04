@@ -5,9 +5,7 @@ var TodoList = React.createClass({
   render: function() {
     var items = this.props.data.map(function (item) {
       return (
-       <TodoItem author={item.completed}>
-         {item.text}
-       </TodoItem>
+       <TodoItem text={item.text}/>
       );
     });
     return (

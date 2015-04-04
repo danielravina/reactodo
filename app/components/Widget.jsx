@@ -39,7 +39,7 @@ var Widget = React.createClass({
   render: function() {
     return (
       <div className="widget">
-      <h1>Todoos</h1>
+      <h1>ToDos</h1>
       <InputBox onTodoAdd={this.handleAddedTodo}/>
       <TodoList data={this.state.data}/>
       </div>

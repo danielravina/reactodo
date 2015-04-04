@@ -8,7 +8,7 @@ var InputBox = React.createClass({displayName: "InputBox",
   handleSubmit: function(e) {
     e.preventDefault();
     var text = React.findDOMNode(this.refs.text).value.trim();
-    console.log(text)
+
     // TODO: send request to the server
     this.props.onTodoAdd({ text: text, completed: false })
     React.findDOMNode(this.refs.text).value = '';
@@ -31,12 +31,11 @@ module.exports = InputBox;
 var React = require("react")
 
 var TodoItem = React.createClass({displayName: "TodoItem",
+
   render: function() {
     return (
       React.createElement("div", {className: "todo-item"}, 
-        this.props.text, 
-        React.createElement("br", null), 
-        this.props.children
+        this.props.text
       )
     );
   }
@@ -52,9 +51,7 @@ var TodoList = React.createClass({displayName: "TodoList",
   render: function() {
     var items = this.props.data.map(function (item) {
       return (
-       React.createElement(TodoItem, {author: item.completed}, 
-         item.text
-       )
+       React.createElement(TodoItem, {text: item.text})
       );
     });
     return (
@@ -110,7 +107,7 @@ var Widget = React.createClass({displayName: "Widget",
   render: function() {
     return (
       React.createElement("div", {className: "widget"}, 
-      React.createElement("h1", null, "Todoos"), 
+      React.createElement("h1", null, "ToDos"), 
       React.createElement(InputBox, {onTodoAdd: this.handleAddedTodo}), 
       React.createElement(TodoList, {data: this.state.data})
       )
