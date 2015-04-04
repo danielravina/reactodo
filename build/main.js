@@ -7,18 +7,18 @@ var React = require("react")
 var InputBox = React.createClass({displayName: "InputBox",
   handleSubmit: function(e) {
     e.preventDefault();
-    alert("sweet")
     var text = React.findDOMNode(this.refs.text).value.trim();
-
+    console.log(text)
     // TODO: send request to the server
+    this.props.onTodoAdd({ text: text, completed: false })
     React.findDOMNode(this.refs.text).value = '';
     return;
   },
 
   render: function() {
     return (
-      React.createElement("form", {className: "inputbox", onSubmit: "handleSubmit"}, 
-        React.createElement("input", {type: "text", placeholder: "Do What"}), 
+      React.createElement("form", {className: "inputbox", onSubmit: this.handleSubmit}, 
+        React.createElement("input", {type: "text", placeholder: "Do What", ref: "text"}), 
         React.createElement("button", null, "Add")
       )
     );
@@ -81,30 +81,37 @@ var Widget = React.createClass({displayName: "Widget",
 
   componentDidMount: function() {
     this.loadCommentsFromServer()
-    setInterval(this.loadCommentsFromServer, 2000)
+    // setInterval(this.loadCommentsFromServer, 2000)
   },
 
   loadCommentsFromServer: function() {
     $.ajax({
       url: this.props.url,
       dataType: 'json',
+
       success: function(data) {
         this.setState({data: data});
       }.bind(this),
+
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
         this.setState({
-          data: [{ "text": "ERROR" , "completed": false },]
+          data: [{ "text": "ERROR" , "completed": false }]
         });
       }.bind(this)
     });
+  },
+
+  handleAddedTodo: function(todo) {
+    this.state.data.push(todo)
+    this.setState({data: this.state.data});
   },
 
   render: function() {
     return (
       React.createElement("div", {className: "widget"}, 
       React.createElement("h1", null, "Todoos"), 
-      React.createElement(InputBox, null), 
+      React.createElement(InputBox, {onTodoAdd: this.handleAddedTodo}), 
       React.createElement(TodoList, {data: this.state.data})
       )
     );

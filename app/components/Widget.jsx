@@ -10,30 +10,37 @@ var Widget = React.createClass({
 
   componentDidMount: function() {
     this.loadCommentsFromServer()
-    setInterval(this.loadCommentsFromServer, 2000)
+    // setInterval(this.loadCommentsFromServer, 2000)
   },
 
   loadCommentsFromServer: function() {
     $.ajax({
       url: this.props.url,
       dataType: 'json',
+
       success: function(data) {
         this.setState({data: data});
       }.bind(this),
+
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
         this.setState({
-          data: [{ "text": "ERROR" , "completed": false },]
+          data: [{ "text": "ERROR" , "completed": false }]
         });
       }.bind(this)
     });
+  },
+
+  handleAddedTodo: function(todo) {
+    this.state.data.push(todo)
+    this.setState({data: this.state.data});
   },
 
   render: function() {
     return (
       <div className="widget">
       <h1>Todoos</h1>
-      <InputBox />
+      <InputBox onTodoAdd={this.handleAddedTodo}/>
       <TodoList data={this.state.data}/>
       </div>
     );
