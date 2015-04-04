@@ -7,26 +7,30 @@ var gulp       = require('gulp'),
     concat     = require('gulp-concat');
 
 gulp.task('browserify', function() {
+
   var bundler = browserify({
       entries: ['./app/main.js'],
       transform: [reactify],
-      debug: true,
+      extensions: ['.js', '.jsx'],
+      debug: false,
       cache: {}, packageCache: {}, fullPaths: true
   });
-  var watcher  = watchify(bundler);
-  return watcher
-  .on('update', function () {
-    var updateStart = Date.now();
-    console.log('Updating!');
-    watcher.bundle()
-    .pipe(source('main.js'))
 
+  var watcher  = watchify(bundler);
+
+  return watcher
+    .on('update', function () {
+      var updateStart = Date.now();
+      console.log('Updating!');
+      watcher.bundle()
+      .on('error', swallowError)
+      .pipe(source('main.js'))
+      .pipe(gulp.dest('./build/'));
+      console.log('Updated!', (Date.now() - updateStart) + 'ms');
+    })
+    .bundle()
+    .pipe(source('main.js'))
     .pipe(gulp.dest('./build/'));
-    console.log('Updated!', (Date.now() - updateStart) + 'ms');
-  })
-  .bundle()
-  .pipe(source('main.js'))
-  .pipe(gulp.dest('./build/'));
 });
 
 
@@ -46,3 +50,9 @@ gulp.task('connect', function() {
 });
 
 gulp.task('default', ['browserify', 'css', 'connect']); // Yeahy!
+
+// Util
+function swallowError(error) {
+    console.log(error.toString())
+    this.emit('end');
+}

@@ -6,7 +6,7 @@ var TodoItem = React.createClass({
       <div className="todo-item">
         {this.props.text}
         <br />
-        {this.props.completed}
+        {this.props.children}
       </div>
     );
   }
