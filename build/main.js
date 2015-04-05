@@ -1,83 +1,20 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"./app/main.js":[function(require,module,exports){
-var Widget = require("./components/Widget");
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"./app/js/main.js":[function(require,module,exports){
+var App = require("./components/App");
 
-},{"./components/Widget":"/Users/danielravina/code/js/Reactodo/app/components/Widget.jsx"}],"/Users/danielravina/code/js/Reactodo/app/components/InputBox.jsx":[function(require,module,exports){
-var React = require("react")
-
-var InputBox = React.createClass({displayName: "InputBox",
-  handleSubmit: function(e) {
-    e.preventDefault();
-    var text = React.findDOMNode(this.refs.text).value.trim();
-
-    // TODO: send request to the server
-    this.props.onTodoAdd({ text: text, completed: false })
-    React.findDOMNode(this.refs.text).value = '';
-    return;
-  },
-
-  render: function() {
-    return (
-      React.createElement("form", {className: "inputbox", onSubmit: this.handleSubmit}, 
-        React.createElement("input", {type: "text", placeholder: "Do What", ref: "text"}), 
-        React.createElement("button", null, "Add")
-      )
-    );
-  }
-});
-
-module.exports = InputBox;
-
-},{"react":"/Users/danielravina/code/js/Reactodo/node_modules/react/react.js"}],"/Users/danielravina/code/js/Reactodo/app/components/TodoItem.jsx":[function(require,module,exports){
-var React = require("react")
-
-var TodoItem = React.createClass({displayName: "TodoItem",
-
-  render: function() {
-    return (
-      React.createElement("div", {className: "todo-item"}, 
-        this.props.text
-      )
-    );
-  }
-});
-
-module.exports = TodoItem
-
-},{"react":"/Users/danielravina/code/js/Reactodo/node_modules/react/react.js"}],"/Users/danielravina/code/js/Reactodo/app/components/TodoList.jsx":[function(require,module,exports){
-var React = require("react"),
-    TodoItem = require("./TodoItem")
-
-var TodoList = React.createClass({displayName: "TodoList",
-  render: function() {
-    var items = this.props.data.map(function (item) {
-      return (
-       React.createElement(TodoItem, {text: item.text})
-      );
-    });
-    return (
-      React.createElement("div", {className: "todo-list"}, 
-        items
-      )
-    );
-  }
-});
-
-
-module.exports = TodoList
-
-},{"./TodoItem":"/Users/danielravina/code/js/Reactodo/app/components/TodoItem.jsx","react":"/Users/danielravina/code/js/Reactodo/node_modules/react/react.js"}],"/Users/danielravina/code/js/Reactodo/app/components/Widget.jsx":[function(require,module,exports){
+},{"./components/App":"/Users/danielravina/code/js/Reactodo/app/js/components/App.jsx"}],"/Users/danielravina/code/js/Reactodo/app/js/components/App.jsx":[function(require,module,exports){
 var React    = require("react");
     TodoList = require("./TodoList"),
     InputBox = require("./InputBox");
     $        = require("jquery")
 
-var Widget = React.createClass({displayName: "Widget",
+var App = React.createClass({displayName: "App",
   getInitialState: function() {
      return {data: []};
    },
 
   componentDidMount: function() {
-    this.loadCommentsFromServer()
+    // No need for now
+    // this.loadCommentsFromServer()
     // setInterval(this.loadCommentsFromServer, 2000)
   },
 
@@ -99,6 +36,15 @@ var Widget = React.createClass({displayName: "Widget",
     });
   },
 
+  handleRemoveTodo: function(todo) {
+    console.log(todo)
+    var items = this.state.data.filter(function(_todo) {
+      return todo.id !== _todo.id;
+    },this)
+    console.log(items)
+    this.setState({data: items});
+  },
+
   handleAddedTodo: function(todo) {
     this.state.data.push(todo)
     this.setState({data: this.state.data});
@@ -106,23 +52,113 @@ var Widget = React.createClass({displayName: "Widget",
 
   render: function() {
     return (
-      React.createElement("div", {className: "widget"}, 
-      React.createElement("h1", null, "ToDos"), 
-      React.createElement(InputBox, {onTodoAdd: this.handleAddedTodo}), 
-      React.createElement(TodoList, {data: this.state.data})
+      React.createElement("div", {className: "app"}, 
+        React.createElement("h1", null, "TODO"), 
+        React.createElement(InputBox, {onTodoAdd: this.handleAddedTodo}), 
+        React.createElement(TodoList, {data: this.state.data, onDestroy: this.handleRemoveTodo})
       )
     );
   }
 });
 
 React.render(
-  React.createElement(Widget, {url: "resources/feed.json"}),
-  document.getElementById('widget')
+  React.createElement(App, {url: "resources/feed.json"}),
+  document.getElementById('app')
 );
 
-module.exports = Widget;
+module.exports = App;
 
-},{"./InputBox":"/Users/danielravina/code/js/Reactodo/app/components/InputBox.jsx","./TodoList":"/Users/danielravina/code/js/Reactodo/app/components/TodoList.jsx","jquery":"/Users/danielravina/code/js/Reactodo/node_modules/jquery/dist/jquery.js","react":"/Users/danielravina/code/js/Reactodo/node_modules/react/react.js"}],"/Users/danielravina/code/js/Reactodo/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
+},{"./InputBox":"/Users/danielravina/code/js/Reactodo/app/js/components/InputBox.jsx","./TodoList":"/Users/danielravina/code/js/Reactodo/app/js/components/TodoList.jsx","jquery":"/Users/danielravina/code/js/Reactodo/node_modules/jquery/dist/jquery.js","react":"/Users/danielravina/code/js/Reactodo/node_modules/react/react.js"}],"/Users/danielravina/code/js/Reactodo/app/js/components/InputBox.jsx":[function(require,module,exports){
+var React = require("react")
+
+var InputBox = React.createClass({displayName: "InputBox",
+
+  componentDidMount: function () {
+    React.findDOMNode(this.refs.text).focus()
+  },
+
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var text = React.findDOMNode(this.refs.text).value.trim();
+    if(text.length == "") {
+      return;
+    }
+
+    this.props.onTodoAdd({ text: text, completed: false, id: (Math.floor( Math.random()*1000) + 1) })
+    React.findDOMNode(this.refs.text).value = '';
+    return;
+  },
+
+  render: function() {
+    return (
+      React.createElement("form", {className: "inputBox", onSubmit: this.handleSubmit}, 
+        React.createElement("input", {type: "text", placeholder: "Do What", ref: "text"})
+      )
+    );
+  }
+});
+
+module.exports = InputBox;
+
+},{"react":"/Users/danielravina/code/js/Reactodo/node_modules/react/react.js"}],"/Users/danielravina/code/js/Reactodo/app/js/components/TodoItem.jsx":[function(require,module,exports){
+var React = require("react")
+
+var TodoItem = React.createClass({displayName: "TodoItem",
+  getInitialState: function () {
+    return {
+      completed: false
+    };
+  },
+
+  handleCompletedChange: function(e) {
+    var checked = React.findDOMNode(this.refs.checkbox).checked
+    this.setState({completed: checked})
+  },
+
+
+  render: function() {
+    console.log("render..")
+    return (
+      React.createElement("div", {className: "todoItem"}, 
+        React.createElement("input", {type: "checkbox", onChange: this.handleCompletedChange, ref: "checkbox"}), 
+        this.props.text, 
+        React.createElement("span", {className: "right", onClick: this.props.onDestroy}, "✗"), 
+        React.createElement("br", null)
+      )
+    );
+  }
+});
+
+module.exports = TodoItem
+
+},{"react":"/Users/danielravina/code/js/Reactodo/node_modules/react/react.js"}],"/Users/danielravina/code/js/Reactodo/app/js/components/TodoList.jsx":[function(require,module,exports){
+var React    = require("react"),
+    TodoItem = require("./TodoItem");
+
+var TodoList = React.createClass({displayName: "TodoList",
+
+
+  render: function() {
+    var items = this.props.data.map(function (item) {
+      return (
+        React.createElement(TodoItem, {text: item.text, 
+                  id: item.id, 
+                  onDestroy: this.props.onDestroy.bind(null, item), 
+                  id: item.id}
+        )
+      );
+    }, this);
+    return (
+      React.createElement("div", {className: "todo-list"}, 
+        items
+      )
+    );
+  }
+});
+
+module.exports = TodoList
+
+},{"./TodoItem":"/Users/danielravina/code/js/Reactodo/app/js/components/TodoItem.jsx","react":"/Users/danielravina/code/js/Reactodo/node_modules/react/react.js"}],"/Users/danielravina/code/js/Reactodo/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -29046,4 +29082,4 @@ module.exports = warning;
 },{"./emptyFunction":"/Users/danielravina/code/js/Reactodo/node_modules/react/lib/emptyFunction.js","_process":"/Users/danielravina/code/js/Reactodo/node_modules/browserify/node_modules/process/browser.js"}],"/Users/danielravina/code/js/Reactodo/node_modules/react/react.js":[function(require,module,exports){
 module.exports = require('./lib/React');
 
-},{"./lib/React":"/Users/danielravina/code/js/Reactodo/node_modules/react/lib/React.js"}]},{},["./app/main.js"]);
+},{"./lib/React":"/Users/danielravina/code/js/Reactodo/node_modules/react/lib/React.js"}]},{},["./app/js/main.js"]);

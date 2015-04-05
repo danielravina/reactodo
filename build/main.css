@@ -1,0 +1,36 @@
+body{
+  font-family: Helvetica, sans-serif;
+}
+#app {
+  width: 40%;
+  margin: auto;
+}
+
+.inputBox {
+  text-align: center;
+
+}
+.inputBox input {
+  font-size: 1.3em;
+  padding: 10px;
+
+}
+#app h1{
+  text-align: center;
+  font-weight: 100;
+}
+.todoItem {
+  margin: 13px;
+  margin-bottom: 4px;
+  padding: 10px;
+  background: #F8F8F8;
+  font-size:1.3em;
+  text-align: left;
+}
+.todoItem input[type=checkbox] {
+  display: inline-block;
+  margin-right: 10px;
+}
+.right {
+  float: right;
+}

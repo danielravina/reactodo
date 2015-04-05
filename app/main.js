@@ -1,1 +1,0 @@
-var Widget = require("./components/Widget");

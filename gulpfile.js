@@ -9,7 +9,7 @@ var gulp       = require('gulp'),
 gulp.task('browserify', function() {
 
   var bundler = browserify({
-      entries: ['./app/main.js'],
+      entries: ['./app/js/main.js'],
       transform: [reactify],
       extensions: ['.js', '.jsx'],
       debug: false,
@@ -33,12 +33,19 @@ gulp.task('browserify', function() {
     .pipe(gulp.dest('./build/'));
 });
 
+gulp.task('sass', function () {
+  gulp.src("app/css/**/*.css")
+    .pipe(sass({ errLogToConsole: true}))
+    .on('error', swallowError)
+    .pipe(minifycss())
+    .pipe(gulp.dest(dev.css.dest))
+});
 
 gulp.task('css', function () {
-  gulp.watch('styles/**/*.css', function () {
-    return gulp.src('styles/**/*.css')
+  gulp.watch('app/css/**/*.css', function () {
+    return gulp.src('css/**/*.css')
     .pipe(concat('main.css'))
-    .pipe(gulp.dest('build/'));
+    .pipe(gulp.dest('./build/main.css'));
   });
 });
 

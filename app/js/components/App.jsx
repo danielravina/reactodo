@@ -3,13 +3,14 @@ var React    = require("react");
     InputBox = require("./InputBox");
     $        = require("jquery")
 
-var Widget = React.createClass({
+var App = React.createClass({
   getInitialState: function() {
      return {data: []};
    },
 
   componentDidMount: function() {
-    this.loadCommentsFromServer()
+    // No need for now
+    // this.loadCommentsFromServer()
     // setInterval(this.loadCommentsFromServer, 2000)
   },
 
@@ -31,6 +32,15 @@ var Widget = React.createClass({
     });
   },
 
+  handleRemoveTodo: function(todo) {
+    console.log(todo)
+    var items = this.state.data.filter(function(_todo) {
+      return todo.id !== _todo.id;
+    },this)
+    console.log(items)
+    this.setState({data: items});
+  },
+
   handleAddedTodo: function(todo) {
     this.state.data.push(todo)
     this.setState({data: this.state.data});
@@ -38,18 +48,18 @@ var Widget = React.createClass({
 
   render: function() {
     return (
-      <div className="widget">
-      <h1>ToDos</h1>
-      <InputBox onTodoAdd={this.handleAddedTodo}/>
-      <TodoList data={this.state.data}/>
+      <div className="app">
+        <h1>TODO</h1>
+        <InputBox onTodoAdd={this.handleAddedTodo} />
+        <TodoList data={this.state.data} onDestroy={this.handleRemoveTodo}/>
       </div>
     );
   }
 });
 
 React.render(
-  <Widget url='resources/feed.json'/>,
-  document.getElementById('widget')
+  <App url='resources/feed.json'/>,
+  document.getElementById('app')
 );
 
-module.exports = Widget;
+module.exports = App;
