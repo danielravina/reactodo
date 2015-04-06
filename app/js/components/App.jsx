@@ -4,6 +4,7 @@ var React    = require("react");
     $        = require("jquery")
 
 var App = React.createClass({
+
   getInitialState: function() {
      return {data: []};
    },
@@ -33,7 +34,6 @@ var App = React.createClass({
   },
 
   handleRemoveTodo: function(todo) {
-    console.log(todo)
     var items = this.state.data.filter(function(_todo) {
       return todo.id !== _todo.id;
     },this)
@@ -51,7 +51,9 @@ var App = React.createClass({
       <div className="app">
         <h1>TODO</h1>
         <InputBox onTodoAdd={this.handleAddedTodo} />
-        <TodoList data={this.state.data} onDestroy={this.handleRemoveTodo}/>
+        <TodoList data={this.state.data}
+                  onDestroy={this.handleRemoveTodo}
+        />
       </div>
     );
   }

@@ -1,4 +1,4 @@
-var React    = require("react"),
+var React    = require('react/addons'),
     TodoItem = require("./TodoItem");
 
 var TodoList = React.createClass({
@@ -15,7 +15,7 @@ var TodoList = React.createClass({
       );
     }, this);
     return (
-      <div className="todo-list">
+      <div className="todoList">
         {items}
       </div>
     );
