@@ -7,7 +7,7 @@
   var TodoItem = React.createClass({
 
     toggle: function(e) {
-      this.props.onToggle({completed: e.currentTarget.checked, id: this.props.id})
+      this.props.onToggle({completed: e.currentTarget.checked, id: this.props.key})
     },
 
     render: function() {

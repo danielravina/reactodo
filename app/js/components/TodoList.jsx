@@ -11,7 +11,7 @@
         return (
           <TodoItem
             text={item.text}
-            id={item.id}
+            key={item.id}
             completed={item.completed}
             onDestroy={this.props.onDestroy.bind(null, item)}
             onToggle={this.props.onToggle}

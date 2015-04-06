@@ -182,7 +182,7 @@
   var TodoItem = React.createClass({displayName: "TodoItem",
 
     toggle: function(e) {
-      this.props.onToggle({completed: e.currentTarget.checked, id: this.props.id})
+      this.props.onToggle({completed: e.currentTarget.checked, id: this.props.key})
     },
 
     render: function() {
@@ -220,7 +220,7 @@
         return (
           React.createElement(TodoItem, {
             text: item.text, 
-            id: item.id, 
+            key: item.id, 
             completed: item.completed, 
             onDestroy: this.props.onDestroy.bind(null, item), 
             onToggle: this.props.onToggle, 
