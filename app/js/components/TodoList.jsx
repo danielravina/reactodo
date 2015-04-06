@@ -1,25 +1,32 @@
-var React    = require('react/addons'),
-    TodoItem = require("./TodoItem");
+(function(){
 
-var TodoList = React.createClass({
+  var React    = require('react/addons'),
+      TodoItem = require("./TodoItem");
+
+  var TodoList = React.createClass({
 
 
-  render: function() {
-    var items = this.props.data.map(function (item) {
+    render: function() {
+      var items = this.props.data.map(function (item) {
+        return (
+          <TodoItem
+            text={item.text}
+            id={item.id}
+            completed={item.completed}
+            onDestroy={this.props.onDestroy.bind(null, item)}
+            onToggle={this.props.onToggle}
+            id={item.id}
+          />
+        );
+      }, this);
       return (
-        <TodoItem text={item.text}
-                  id={item.id}
-                  onDestroy={this.props.onDestroy.bind(null, item)}
-                  id={item.id}
-        />
+        <div className="todoList">
+          {items}
+        </div>
       );
-    }, this);
-    return (
-      <div className="todoList">
-        {items}
-      </div>
-    );
-  }
-});
+    }
+  });
 
-module.exports = TodoList
+  module.exports = TodoList
+
+})();

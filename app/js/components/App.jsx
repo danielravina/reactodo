@@ -1,67 +1,102 @@
-var React    = require("react");
-    TodoList = require("./TodoList"),
-    InputBox = require("./InputBox");
-    $        = require("jquery")
+(function(){
 
-var App = React.createClass({
+  "use strict"
 
-  getInitialState: function() {
-     return {data: []};
-   },
+  var React     = require("react"),
+      TodoList  = require("./TodoList"),
+      InputBox  = require("./InputBox"),
+      StatusBar = require("./StatusBar")
 
-  componentDidMount: function() {
-    // No need for now
-    // this.loadCommentsFromServer()
-    // setInterval(this.loadCommentsFromServer, 2000)
-  },
+  var App = React.createClass({
 
-  loadCommentsFromServer: function() {
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
+    getInitialState: function() {
+       return {data: []};
+     },
 
-      success: function(data) {
-        this.setState({data: data});
-      }.bind(this),
+    componentDidMount: function() {
+      // No need for now! Just testing
+      // this.loadCommentsFromServer()
+      // setInterval(this.loadCommentsFromServer, 2000)
+    },
 
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-        this.setState({
-          data: [{ "text": "ERROR" , "completed": false }]
-        });
-      }.bind(this)
-    });
-  },
+    loadCommentsFromServer: function() {
+      // No need for now! Just testing
+      // $.ajax({
+      //   url: this.props.url,
+      //   dataType: 'json',
 
-  handleRemoveTodo: function(todo) {
-    var items = this.state.data.filter(function(_todo) {
-      return todo.id !== _todo.id;
-    },this)
-    console.log(items)
-    this.setState({data: items});
-  },
+      //   success: function(data) {
+      //     this.setState({data: data});
+      //   }.bind(this),
 
-  handleAddedTodo: function(todo) {
-    this.state.data.push(todo)
-    this.setState({data: this.state.data});
-  },
+      //   error: function(xhr, status, err) {
+      //     console.error(this.props.url, status, err.toString());
+      //     this.setState({
+      //       data: [{ "text": "ERROR" , "completed": false }]
+      //     });
+      //   }.bind(this)
+      // });
+    },
 
-  render: function() {
-    return (
-      <div className="app">
-        <h1>TODO</h1>
-        <InputBox onTodoAdd={this.handleAddedTodo} />
-        <TodoList data={this.state.data}
-                  onDestroy={this.handleRemoveTodo}
-        />
-      </div>
-    );
-  }
-});
+    getStatusCount: function(isCompleted) {
+      var count = this.state.data.filter(function(todo){
+        return todo.completed == isCompleted
+      }).length
+      return count;
+    },
 
-React.render(
-  <App url='resources/feed.json'/>,
-  document.getElementById('app')
-);
+    getTotalCount: function() {
+      return this.state.data.length;
+    },
 
-module.exports = App;
+    handleRemoveTodo: function(todo) {
+      var items = this.state.data.filter(function(_todo) {
+        return todo.id !== _todo.id;
+      },this)
+      this.setState({data: items});
+    },
+
+    handleToggleTodo: function(todo) {
+
+      var items = this.state.data.map(function(_todo) {
+        if(todo.id === _todo.id) {
+          _todo.completed = todo.completed;
+        }
+        return _todo;
+      },this);
+
+      this.setState({data: items});
+    },
+
+    handleAddedTodo: function(todo) {
+      this.state.data.push(todo)
+      this.setState({data: this.state.data});
+    },
+
+    render: function() {
+      console.log("render")
+      return (
+        <div className="app">
+          <h1>TODO</h1>
+          <InputBox onTodoAdd={this.handleAddedTodo} />
+          <StatusBar
+            completed={this.getStatusCount(true)}
+            active={this.getStatusCount(false)}
+            total={this.getTotalCount()}
+          />
+          <TodoList data={this.state.data}
+                    onDestroy={this.handleRemoveTodo}
+                    onToggle={this.handleToggleTodo}
+          />
+        </div>
+      );
+    }
+  });
+
+  React.render(
+    <App url='resources/feed.json'/>,
+    document.getElementById('app')
+  );
+
+  module.exports = App;
+})();

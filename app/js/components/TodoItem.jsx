@@ -1,32 +1,32 @@
-var React = require("react")
+(function(){
 
-var TodoItem = React.createClass({
+  "use strict"
 
-  getInitialState: function () {
-    return {
-      completed: false
-    };
-  },
+  var React = require("react");
 
-  toggle: function(e) {
-    this.setState({completed: e.currentTarget.checked})
-  },
+  var TodoItem = React.createClass({
 
-  render: function() {
-    var classes = React.addons.classSet({
-      'todoItem': true,
-      'completed': this.state.completed
-    });
+    toggle: function(e) {
+      this.props.onToggle({completed: e.currentTarget.checked, id: this.props.id})
+    },
 
-    return (
-      <div className={classes}>
-        <input type="checkbox" onChange={this.toggle} />
-        <span className="text">{this.props.text}</span>
-        <span className="right" onClick={this.props.onDestroy}>&#x2717;</span>
-        <br />
-      </div>
-    );
-  }
-});
+    render: function() {
+      var classes = React.addons.classSet({
+        'todoItem': true,
+        'completed': this.props.completed
+      });
 
-module.exports = TodoItem
+      return (
+        <div className={classes}>
+          <input type="checkbox" onChange={this.toggle} />
+          <span className="text">{this.props.text}</span>
+          <span className="destroy" onClick={this.props.onDestroy}>&#x274C;</span>
+          <br />
+        </div>
+      );
+    }
+  });
+
+  module.exports = TodoItem
+
+})();

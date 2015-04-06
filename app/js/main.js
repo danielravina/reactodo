@@ -1,1 +1,7 @@
-var App = require("./components/App");
+(function() {
+
+  "use strict"
+
+  var App = require("./components/App");
+
+})();

@@ -13,6 +13,8 @@ body{
 .inputBox input {
   font-size: 1.3em;
   padding: 10px;
+  width:100%;
+  box-sizing: border-box;
 
 }
 #app h1{
@@ -20,11 +22,12 @@ body{
   font-weight: 100;
 }
 .todoItem {
-  margin: 13px;
+  margin: 13px 0;
   margin-bottom: 4px;
   padding: 10px;
+  box-sizing: border-box;
   background: #F8F8F8;
-  font-size:1.3em;
+  font-size: 1.3em;
   text-align: left;
 }
 .todoItem input[type=checkbox] {
@@ -40,6 +43,16 @@ body{
    color:#BFBFBF;
 }
 
-.right {
+.destroy {
   float: right;
+  margin-top: -3px;
+  cursor: pointer;
+}
+
+.statusBar{
+  background: #F0ECDF;
+  border-sizing: border-box;
+  padding:10px;
+  display: flex;
+  justify-content: space-around;
 }
