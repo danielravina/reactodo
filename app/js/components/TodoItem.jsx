@@ -7,10 +7,12 @@
   var TodoItem = React.createClass({
 
     toggle: function(e) {
-      this.props.onToggle({completed: e.currentTarget.checked, id: this.props.key})
+      console.log(this.key)
+      this.props.onToggle({completed: e.currentTarget.checked, id: this.props.id})
     },
 
     render: function() {
+      console.log(this.props.id);
       var classes = React.addons.classSet({
         'todoItem': true,
         'completed': this.props.completed

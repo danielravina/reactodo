@@ -57,7 +57,7 @@
     },
 
     handleToggleTodo: function(todo) {
-
+      console.log(todo)
       var items = this.state.data.map(function(_todo) {
         if(todo.id === _todo.id) {
           _todo.completed = todo.completed;
@@ -74,7 +74,6 @@
     },
 
     render: function() {
-      console.log("render")
       return (
         <div className="app">
           <h1>TODO</h1>

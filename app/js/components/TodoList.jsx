@@ -12,10 +12,11 @@
           <TodoItem
             text={item.text}
             key={item.id}
+            id={item.id}
             completed={item.completed}
             onDestroy={this.props.onDestroy.bind(null, item)}
             onToggle={this.props.onToggle}
-            id={item.id}
+
           />
         );
       }, this);
